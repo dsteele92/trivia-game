@@ -1,0 +1,134 @@
+@import 'sass';
+
+.SetUp {
+	position: relative;
+	height: 95%;
+	width: 95%;
+	max-width: 960px;
+	max-height: 1080px;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	box-shadow: 0 0 20px 1px rgba(106, 106, 106, 0.412);
+	padding: 2%;
+	background-color: $color-blue;
+
+	.ToDo {
+		position: relative;
+		margin-top: 5%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 10%;
+		min-height: fit-content;
+		width: 90%;
+
+		.ToDoItem {
+			border: 2px solid black;
+			height: 100px;
+			width: 100px;
+			border-radius: 50%;
+			text-align: center;
+			transition: all 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
+			@include flex-center;
+
+			&Current {
+				@extend .ToDoItem;
+				box-shadow: inset 0 0 10px 2px white;
+			}
+			&Complete {
+				@extend .ToDoItem;
+			}
+		}
+	}
+	.Settings {
+		position: relative;
+		margin-top: 5%;
+		height: 70%;
+		width: 90%;
+		overflow: hidden;
+		@mixin SetUp {
+			position: absolute;
+			height: 40%;
+			width: 80%;
+			padding: 5%;
+			border: 2px solid black;
+			border-radius: 20px;
+			transition: all 1s cubic-bezier(0.165, 0.85, 0.2, 1.1);
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: flex-start;
+
+			.InputDiv {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				label {
+				}
+				input {
+					margin-left: 10px;
+				}
+			}
+		}
+		.Name1 {
+			@include SetUp();
+			top: 5%;
+			left: 0;
+			transition-delay: 0.7s;
+			&Below {
+				@extend .Name1;
+				top: 105%;
+				transition-delay: 0.2s;
+			}
+		}
+		.Name2 {
+			@include SetUp();
+			bottom: 5%;
+			right: 0;
+			transition-delay: 1s;
+			&Below {
+				@extend .Name2;
+				bottom: -95%;
+				transition-delay: 0s;
+			}
+		}
+		.Character1 {
+			@include SetUp();
+			top: 5%;
+			left: 0;
+			transition-delay: 0.7s;
+			&Above {
+				@extend .Character1;
+				top: -95%;
+				transition-delay: 0s;
+			}
+			&Below {
+				@extend .Character1;
+				top: 105%;
+				transition-delay: 0.2s;
+			}
+		}
+		.Character2 {
+			@include SetUp();
+			bottom: 5%;
+			right: 0;
+			transition-delay: 0.5s;
+			&Above {
+				@extend .Character2;
+				bottom: 105%;
+				transition-delay: 0.2s;
+			}
+			&Below {
+				@extend .Character2;
+				bottom: -95%;
+				transition-delay: 0s;
+			}
+		}
+	}
+	.Next {
+	}
+}
