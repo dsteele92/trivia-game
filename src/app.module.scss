@@ -5,4 +5,7 @@
 	width: 100vw;
 	background-color: $color-background;
 	@include flex-center;
+	// background-image: url('./assets/map.png');
+	// background-position: center;
+	// background-size: cover;
 }

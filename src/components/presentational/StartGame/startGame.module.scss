@@ -1,0 +1,126 @@
+@import 'sass';
+
+.StartGame {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+
+	.Matchup {
+		height: 50%;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		align-items: center;
+
+		.Team {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+
+			h1 {
+				font-size: 40px;
+				margin-bottom: 5%;
+			}
+			.Character {
+				width: 150px;
+				height: 150px;
+				border-radius: 50%;
+				border: 2px solid rgb(221, 175, 82);
+				box-shadow: 0 0 10px 2px rgb(208, 195, 171);
+				overflow: hidden;
+				background-size: cover;
+				background-repeat: no-repeat;
+
+				&1 {
+					@extend .Character;
+					background-image: url('../../../assets/aang.png');
+				}
+				&2 {
+					@extend .Character;
+					background-image: url('../../../assets/katara.png');
+				}
+				&3 {
+					@extend .Character;
+					background-image: url('../../../assets/sokka.png');
+				}
+				&4 {
+					@extend .Character;
+					background-image: url('../../../assets/zuko.png');
+					background-size: contain;
+				}
+				&5 {
+					@extend .Character;
+					background-image: url('../../../assets/iroh.png');
+				}
+				&6 {
+					@extend .Character;
+					background-image: url('../../../assets/toph.png');
+				}
+				&7 {
+					@extend .Character;
+					background-image: url('../../../assets/azula.png');
+					background-size: contain;
+					background-position: center;
+				}
+				&8 {
+					@extend .Character;
+					background-image: url('../../../assets/appa.png');
+					background-size: contain;
+					background-position: center;
+				}
+			}
+		}
+	}
+
+	.Game {
+		height: 50%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		.Round {
+			width: 70%;
+			height: 40px;
+			border: 1px solid $color-blue;
+			border-radius: 50px;
+			margin-bottom: 5px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.Number {
+				height: 100%;
+				width: 20%;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: center;
+
+				h4 {
+					font-size: 10px;
+					text-transform: uppercase;
+					font-weight: 100;
+				}
+				div {
+					font-size: 20px;
+				}
+			}
+			.Category {
+				height: 100%;
+				width: 80%;
+				text-align: left;
+				font-size: 20px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+	}
+}

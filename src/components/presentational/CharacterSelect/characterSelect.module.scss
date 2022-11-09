@@ -1,0 +1,102 @@
+@import 'sass';
+
+.CharacterSelect {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+
+	h3 {
+		align-self: flex-start;
+	}
+
+	.CharacterList {
+		width: 100%;
+		// height: 60%;
+		// background-color: antiquewhite;
+		display: grid;
+		grid-template-rows: repeat(2, 1fr);
+		grid-template-columns: repeat(4, 1fr);
+
+		// @media screen and (max-width: $breakpoint-tablet) {
+		// 	grid-template-rows: repeat(2, 50px);
+		// 	grid-template-columns: repeat(4, 60px);
+		// 	align-items: center;
+		// }
+
+		@media screen and (max-width: 330px) {
+			grid-template-rows: repeat(4, 50px);
+			grid-template-columns: repeat(2, 75px);
+		}
+
+		@mixin Outer {
+			width: 75px;
+			height: 75px;
+			margin: 10px 20px;
+			border-radius: 50%;
+			box-sizing: border-box;
+			overflow: hidden;
+			justify-self: center;
+			transition: cubic-bezier(0.19, 1, 0.22, 1);
+		}
+
+		.Selected {
+			@include Outer();
+			border: 2px solid rgb(221, 175, 82);
+			box-shadow: 0 0 10px 2px rgb(208, 195, 171);
+		}
+		.Unselected {
+			@include Outer();
+			border: 0.5px solid black;
+		}
+
+		.Character {
+			width: 75px;
+			height: 75px;
+			border-radius: 50%;
+			overflow: hidden;
+			background-size: cover;
+			background-repeat: no-repeat;
+
+			&1 {
+				@extend .Character;
+				background-image: url('../../../assets/aang.png');
+			}
+			&2 {
+				@extend .Character;
+				background-image: url('../../../assets/katara.png');
+			}
+			&3 {
+				@extend .Character;
+				background-image: url('../../../assets/sokka.png');
+			}
+			&4 {
+				@extend .Character;
+				background-image: url('../../../assets/zuko.png');
+				background-size: contain;
+			}
+			&5 {
+				@extend .Character;
+				background-image: url('../../../assets/iroh.png');
+			}
+			&6 {
+				@extend .Character;
+				background-image: url('../../../assets/toph.png');
+			}
+			&7 {
+				@extend .Character;
+				background-image: url('../../../assets/azula.png');
+				background-size: contain;
+				background-position: center;
+			}
+			&8 {
+				@extend .Character;
+				background-image: url('../../../assets/appa.png');
+				background-size: contain;
+				background-position: center;
+			}
+		}
+	}
+}
