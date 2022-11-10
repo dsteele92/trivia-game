@@ -11,44 +11,90 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
-	box-shadow: 0 0 20px 1px rgba(106, 106, 106, 0.412);
-	padding: 2%;
+	overflow: hidden;
+	box-shadow: 0 0 20px 3px rgba(106, 106, 106, 0.412);
+	// padding: 2%;
 	background-color: $color-blue;
 	// background-color: rgba($color: $color-blue, $alpha: 0.8);
 
 	.ToDo {
+		z-index: 0;
 		position: relative;
-		margin-top: 3%;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		height: 10%;
-		min-height: fit-content;
-		width: 90%;
+		border-radius: 20px 20px 0 0;
+		width: 100%;
+		height: 17%;
+		min-height: 150px;
+
+		background-image: url('../../../assets/sky.jpg');
+		background-size: cover;
+		background-position: top;
+
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
 
 		.ToDoItem {
-			border: 2px solid black;
-			height: 100px;
-			width: 100px;
-			border-radius: 50%;
+			// border: 2px solid black;
+			// height: 90px;
+			// width: 90px;
+			// border-radius: 50%;
+			z-index: 1;
+			height: 100%;
+			width: 100%;
 			text-align: center;
-			transition: all 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
+			transition: all 1s cubic-bezier(0.39, 0.575, 0.565, 1);
 			@include flex-center;
+			font-size: 20px;
+			// text-transform: uppercase;
+			letter-spacing: 0.5pt;
 
 			&Current {
 				@extend .ToDoItem;
-				box-shadow: inset 0 0 10px 2px white;
+
+				// box-shadow: inset 0 0 10px 2px white;
 			}
 			&Complete {
 				@extend .ToDoItem;
+				color: rgb(127, 127, 127);
+			}
+		}
+
+		.AppaFly {
+			position: absolute;
+			height: 60px;
+			width: 100px;
+			background-image: url('../../../assets/appa.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: bottom;
+			transition: 1.5s all cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+			&0 {
+				@extend .AppaFly;
+				left: 7%;
+				bottom: 0;
+			}
+			&1 {
+				@extend .AppaFly;
+				left: 33%;
+				bottom: 55%;
+			}
+			&2 {
+				@extend .AppaFly;
+				left: 57%;
+				bottom: 0;
+			}
+			&3 {
+				@extend .AppaFly;
+				left: 82%;
+				bottom: 55%;
 			}
 		}
 	}
 	.Settings {
 		position: relative;
-		margin-top: 3%;
-		height: 74%;
-		width: 90%;
+		// margin-top: 3%;
+		height: 68%;
+		width: 85%;
 		overflow: hidden;
 		@mixin SetUp {
 			position: absolute;
@@ -62,44 +108,65 @@
 			flex-direction: column;
 			justify-content: flex-start;
 			align-items: flex-start;
-			background-color: $color-beige;
+			background-color: rgb(248, 254, 255);
+		}
+		.Name {
+			@include SetUp();
+			padding: 5% 8%;
 
 			.InputDiv {
+				// align-self: center;
 				position: absolute;
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
 				label {
+					margin-bottom: 10px;
+					text-transform: uppercase;
+					font-size: 16px;
 				}
 				input {
+					width: 250px;
+					height: 50px;
+					text-align: center;
 					margin-left: 10px;
-					border: 1px solid black;
-					padding: 2px;
+					border: none;
+					border-radius: 20px;
+					background-color: rgba($color: $color-teal, $alpha: 0.5);
+					padding: 10px 20px;
+					font-size: 25px;
+					font-weight: 100;
+				}
+			}
+
+			&1 {
+				@extend .Name;
+				top: 5%;
+				left: 0;
+				transition-delay: 0.7s;
+				&Below {
+					@extend .Name1;
+					top: 105%;
+					transition-delay: 0.2s;
+				}
+			}
+			&2 {
+				@extend .Name;
+				bottom: 3%;
+				right: 0;
+				transition-delay: 0.5s;
+				&Below {
+					@extend .Name2;
+					bottom: -93%;
+					transition-delay: 0s;
 				}
 			}
 		}
-		.Name1 {
-			@include SetUp();
-			top: 5%;
-			left: 0;
-			transition-delay: 0.7s;
-			&Below {
-				@extend .Name1;
-				top: 105%;
-				transition-delay: 0.2s;
-			}
-		}
-		.Name2 {
-			@include SetUp();
-			bottom: 5%;
-			right: 0;
-			transition-delay: 0.5s;
-			&Below {
-				@extend .Name2;
-				bottom: -95%;
-				transition-delay: 0s;
-			}
-		}
+
 		.Character1 {
 			@include SetUp();
 			top: 5%;
@@ -118,17 +185,17 @@
 		}
 		.Character2 {
 			@include SetUp();
-			bottom: 5%;
+			bottom: 3%;
 			right: 0;
 			transition-delay: 0.5s;
 			&Above {
 				@extend .Character2;
-				bottom: 105%;
+				bottom: 103%;
 				transition-delay: 0.2s;
 			}
 			&Below {
 				@extend .Character2;
-				bottom: -95%;
+				bottom: -93%;
 				transition-delay: 0s;
 			}
 		}
@@ -156,6 +223,7 @@
 			width: 100%;
 			top: 5%;
 			left: 0;
+			padding: 0 5% 2%;
 			transition-delay: 0.3s;
 			&Above {
 				@extend .StartGame;

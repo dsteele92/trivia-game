@@ -162,9 +162,10 @@ export default function SetUp() {
 				});
 				setCategoryIds(ids);
 			}
-
+			if (page < 2) {
+				setNextActive(false);
+			}
 			setPage(page + 1);
-			setNextActive(false);
 		}
 	};
 
@@ -181,6 +182,7 @@ export default function SetUp() {
 					Select Categories
 				</div>
 				<div className={page === 3 ? Style.ToDoItemCurrent : Style.ToDoItem}>Start Game</div>
+				<div className={Style[`AppaFly${page}`]}></div>
 			</section>
 			<main className={Style.Settings}>
 				<div className={page === 0 ? Style.Name1 : Style.Name1Below}>
@@ -244,7 +246,7 @@ export default function SetUp() {
 				</div>
 			</main>
 			<BackButton active={backActive} onClick={backClick} />
-			<NextButton active={nextActive} onClick={nextClick} />
+			<NextButton active={nextActive} onClick={nextClick} page={page} />
 		</div>
 	);
 }

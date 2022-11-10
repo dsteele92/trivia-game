@@ -34,8 +34,8 @@
 
 			&Selected {
 				@extend .Rounds;
-				border: 2px solid rgb(221, 175, 82);
-				box-shadow: 0 0 10px 2px rgb(208, 195, 171);
+				border: 2px solid $color-gold;
+				box-shadow: 0 0 10px 2px $color-gold;
 			}
 		}
 	}
@@ -62,8 +62,8 @@
 
 		.Selected {
 			@include Category();
-			border: 2px solid rgb(221, 175, 82);
-			box-shadow: 0 0 10px 2px rgb(208, 195, 171);
+			border: 2px solid $color-gold;
+			box-shadow: 0 0 10px 2px $color-gold;
 		}
 		.Unselected {
 			@include Category();

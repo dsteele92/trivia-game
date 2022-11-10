@@ -2,15 +2,79 @@
 
 .Button {
 	@include button();
+	z-index: 0;
 	position: absolute;
-	right: 5%;
+	right: 8%;
 	bottom: 5%;
-	background: rgba($color: $color-beige, $alpha: 0.5);
-	transition: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+	background: transparent;
+	border: none;
+	transition: all cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+	.Border {
+		z-index: -1;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		border-radius: 50%;
+		background-color: transparent;
+		border: 2px solid black;
+		transition: border 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+		transition: box-shadow 1s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+		transition: background-color 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+	}
+
+	.Start {
+		z-index: -1;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		border-radius: 50%;
+		background-color: rgba($color: $color-teal, $alpha: 0.8);
+		border: none;
+		opacity: 1;
+		transition: all 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
+		@keyframes glow {
+			0% {
+				background-color: rgba($color: $color-teal, $alpha: 0.8);
+			}
+			50% {
+				background-color: rgba($color: $color-teal, $alpha: 0.5);
+			}
+			100% {
+				background-color: rgba($color: $color-teal, $alpha: 0.8);
+			}
+		}
+		animation: glow 1.5s 0.5s infinite;
+
+		&Hide {
+			@extend .Start;
+			opacity: 0;
+		}
+	}
 
 	&Active {
 		@extend .Button;
 		cursor: pointer;
-		background: rgba($color: $color-beige, $alpha: 1);
+
+		.Border {
+			border: 2px solid $color-gold;
+			box-shadow: 0 0 10px 2px $color-gold;
+			background-color: rgb(255, 255, 247);
+			transition: background-color 1s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+			@keyframes spin {
+				from {
+					transform: rotateY(0deg);
+				}
+				to {
+					transform: rotateY(720deg);
+				}
+			}
+			animation: spin 2s cubic-bezier(0.23, 1, 0.32, 1);
+		}
 	}
 }

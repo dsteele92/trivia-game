@@ -5,7 +5,7 @@
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
+	justify-content: space-evenly;
 	align-items: center;
 
 	h3 {
@@ -32,8 +32,8 @@
 		}
 
 		@mixin Outer {
-			width: 75px;
-			height: 75px;
+			width: 80px;
+			height: 80px;
 			margin: 10px 20px;
 			border-radius: 50%;
 			box-sizing: border-box;
@@ -44,8 +44,8 @@
 
 		.Selected {
 			@include Outer();
-			border: 2px solid rgb(221, 175, 82);
-			box-shadow: 0 0 10px 2px rgb(208, 195, 171);
+			border: 2px solid $color-gold;
+			box-shadow: 0 0 10px 2px $color-gold;
 		}
 		.Unselected {
 			@include Outer();
@@ -53,8 +53,8 @@
 		}
 
 		.Character {
-			width: 75px;
-			height: 75px;
+			width: 80px;
+			height: 80px;
 			border-radius: 50%;
 			overflow: hidden;
 			background-size: cover;
