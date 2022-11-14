@@ -31,6 +31,7 @@
 			text-align: center;
 			transition: all 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
 			@include flex-center;
+			cursor: pointer;
 
 			&Selected {
 				@extend .Rounds;
@@ -58,12 +59,116 @@
 			margin: 10px 0;
 			flex-shrink: 0;
 			@include flex-center;
+			cursor: pointer;
+			position: relative;
+
+			.Difficulty {
+				z-index: 0;
+				position: absolute;
+				height: 100%;
+				width: 20%;
+				top: 0;
+				right: -20%;
+				background-color: rgba($color: $color-teal, $alpha: 0.5);
+				@include flex-center;
+				overflow: hidden;
+				// cursor: default;
+
+				@keyframes slideIn {
+					from {
+						right: -20%;
+					}
+					to {
+						right: 0;
+					}
+				}
+
+				animation: slideIn 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) forwards;
+
+				.Arrows {
+					z-index: 1;
+					position: absolute;
+					height: 100%;
+					width: 25%;
+					top: 0;
+					left: 0;
+					// background-color: red;
+
+					display: grid;
+					grid-template-rows: 1fr 1fr;
+
+					color: $color-blue;
+					font-size: 20px;
+
+					.Arrow {
+						@include flex-center;
+						cursor: pointer;
+						font-size: 22px;
+
+						:hover {
+							transition: all 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+							color: $color-yellow;
+						}
+					}
+				}
+
+				.Slider {
+					position: absolute;
+					height: 400%;
+					width: 75%;
+					padding-right: 20%;
+					top: 0;
+					right: 0;
+					display: flex;
+					flex-direction: column;
+					transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+					.Option {
+						position: relative;
+						height: 25%;
+						width: 100%;
+						@include flex-center;
+						font-weight: 100;
+						text-transform: uppercase;
+						font-size: 14px;
+					}
+
+					&0 {
+						@extend .Slider;
+						transform: translateY(0);
+					}
+					&3 {
+						@extend .Slider;
+						transform: translateY(-25%);
+					}
+					&2 {
+						@extend .Slider;
+						transform: translateY(-50%);
+					}
+					&1 {
+						@extend .Slider;
+						transform: translateY(-75%);
+					}
+				}
+			}
+
+			.ClickableArea {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+			}
 		}
 
 		.Selected {
 			@include Category();
 			border: 2px solid $color-gold;
 			box-shadow: 0 0 10px 2px $color-gold;
+
+			.ClickableArea {
+				width: 80%;
+			}
 		}
 		.Unselected {
 			@include Category();

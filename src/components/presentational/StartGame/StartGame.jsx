@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import Style from './startGame.module.scss';
 
 export default function SelectGame(props) {
-	const categories = [];
-	props.categoryIds.forEach((catId) => {
-		const index = catId - 9;
-		const cat = props.categoriesList[index];
-		categories.push(cat);
-	});
+	// const categories = [];
+	// Object.keys(props.categoryIds).forEach((catId) => {
+	// 	const cat = props.categoriesList[catId];
+	// 	categories.push(cat);
+	// });
 
 	return (
 		<div className={Style.StartGame}>
@@ -23,14 +22,17 @@ export default function SelectGame(props) {
 				</div>
 			</section>
 			<section className={Style.Game}>
-				{categories.map((cat, index) => (
+				{Object.entries(props.categoryIds).map((entry, index) => (
 					<div key={index} className={Style.Round}>
 						<div className={Style.Number}>
 							<h4>Round</h4>
 							<div>{index + 1}</div>
 						</div>
 						<div className={Style.Category}>
-							<p>{cat}</p>
+							<p>{props.categoriesList[entry[0]]}</p>
+						</div>
+						<div className={Style.Difficulty}>
+							<h4>{entry[1]}</h4>
 						</div>
 					</div>
 				))}

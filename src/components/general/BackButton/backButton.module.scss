@@ -23,14 +23,37 @@
 		transition: all 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95);
 	}
 
+	.Arrow {
+		z-index: -1;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		border-radius: 50%;
+		top: 0;
+		left: 0;
+		opacity: 0;
+		transition: all 0.5s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+		@include flex-center;
+		transform: rotateZ(135deg);
+		font-size: 50px;
+		color: $color-gold;
+	}
+
 	&Active {
 		@extend .Button;
 		cursor: pointer;
 
+		p {
+			color: white;
+		}
 		.Border {
 			border: 2px solid $color-gold;
 			box-shadow: 0 0 10px 2px $color-gold;
-			background-color: rgb(255, 255, 247);
+			background-color: rgba($color: $color-gold, $alpha: 0.8);
+			transition: background-color 1s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+		}
+		.Arrow {
+			opacity: 1;
 		}
 	}
 }

@@ -12,30 +12,30 @@ export default function SetUp() {
 	const [character2, setCharacter2] = useState(0);
 	const [rounds, setRounds] = useState(5);
 	const [categories, setCategories] = useState({
-		0: false,
-		1: false,
-		2: false,
-		3: false,
-		4: false,
-		5: false,
-		6: false,
-		7: false,
-		8: false,
-		9: false,
-		10: false,
-		11: false,
-		12: false,
-		13: false,
-		14: false,
-		15: false,
-		16: false,
-		17: false,
-		18: false,
-		19: false,
-		20: false,
-		21: false,
-		22: false,
-		23: false,
+		0: { selected: false, difficulty: 2 },
+		1: { selected: false, difficulty: 2 },
+		2: { selected: false, difficulty: 2 },
+		3: { selected: false, difficulty: 2 },
+		4: { selected: false, difficulty: 2 },
+		5: { selected: false, difficulty: 2 },
+		6: { selected: false, difficulty: 2 },
+		7: { selected: false, difficulty: 2 },
+		8: { selected: false, difficulty: 2 },
+		9: { selected: false, difficulty: 2 },
+		10: { selected: false, difficulty: 2 },
+		11: { selected: false, difficulty: 2 },
+		12: { selected: false, difficulty: 2 },
+		13: { selected: false, difficulty: 2 },
+		14: { selected: false, difficulty: 2 },
+		15: { selected: false, difficulty: 2 },
+		16: { selected: false, difficulty: 2 },
+		17: { selected: false, difficulty: 2 },
+		18: { selected: false, difficulty: 2 },
+		19: { selected: false, difficulty: 2 },
+		20: { selected: false, difficulty: 2 },
+		21: { selected: false, difficulty: 2 },
+		22: { selected: false, difficulty: 2 },
+		23: { selected: false, difficulty: 2 },
 	});
 	const [categoriesMinSet, setCategoriesMinSet] = useState(false);
 	const [categoryIds, setCategoryIds] = useState([]);
@@ -115,13 +115,13 @@ export default function SetUp() {
 	};
 
 	const selectCategory = (catId, totalCat) => {
-		if (categories[catId]) {
+		if (categories[catId].selected) {
 			const catRemoved = { ...categories };
-			catRemoved[catId] = false;
+			catRemoved[catId].selected = false;
 			setCategories(catRemoved);
 		} else {
 			const catAdded = { ...categories };
-			catAdded[catId] = true;
+			catAdded[catId].selected = true;
 			setCategories(catAdded);
 		}
 
@@ -132,6 +132,12 @@ export default function SetUp() {
 		}
 	};
 
+	const selectDifficulty = (catId, difficulty) => {
+		const updated = { ...categories };
+		updated[catId].difficulty = difficulty;
+		setCategories(updated);
+	};
+
 	const selectRounds = (amount, totalCat) => {
 		setRounds(amount);
 		if (totalCat === amount) {
@@ -140,6 +146,8 @@ export default function SetUp() {
 			setCategoriesMinSet(false);
 		}
 	};
+
+	const startGame = (startingInfo) => {};
 
 	const backClick = () => {
 		if (!backActive) {
@@ -153,14 +161,32 @@ export default function SetUp() {
 			return;
 		} else {
 			if (page === 2) {
-				const ids = [];
-				Object.values(categories).forEach((bool, index) => {
-					if (bool) {
-						const id = index + 9;
-						ids.push(id);
-					}
-				});
+				const ids = {};
+				while (Object.keys(ids).length < rounds) {
+					Object.values(categories).forEach((info, index) => {
+						let difficulty;
+						if (info.difficulty === 0) {
+							difficulty = 'any';
+						} else if (info.difficulty === 1) {
+							difficulty = 'easy';
+						} else if (info.difficulty === 2) {
+							difficulty = 'medium';
+						} else if (info.difficulty === 3) {
+							difficulty = 'hard';
+						}
+						if (info.selected) {
+							ids[index] = difficulty;
+						}
+					});
+				}
 				setCategoryIds(ids);
+				console.log(ids);
+				// Object.values(categories).forEach((bool, index) => {
+				// 	if (bool) {
+				// 		const id = index + 9;
+				// 		ids.push(id);
+				// 	}
+				// });
 			}
 			if (page < 2) {
 				setNextActive(false);
@@ -229,6 +255,7 @@ export default function SetUp() {
 					}>
 					<CategorySelect
 						selectCategory={selectCategory}
+						selectDifficulty={selectDifficulty}
 						selectRounds={selectRounds}
 						categoriesList={categoriesList}
 					/>

@@ -59,6 +59,7 @@
 			overflow: hidden;
 			background-size: cover;
 			background-repeat: no-repeat;
+			cursor: pointer;
 
 			&1 {
 				@extend .Character;
