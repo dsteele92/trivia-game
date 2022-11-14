@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from 'react';
+import axios from 'axios';
 import Style from './setUp.module.scss';
 import { NextButton, BackButton, CharacterSelect, CategorySelect, StartGame } from 'components';
 
@@ -147,7 +148,51 @@ export default function SetUp() {
 		}
 	};
 
-	const startGame = (startingInfo) => {};
+	const startGame = async () => {
+		let requests = [];
+		let urls = [];
+		let token = '';
+		let questions = [];
+
+		if (!localStorage.triviaToken) {
+			try {
+				const tokenRequest = await axios.get('https://opentdb.com/api_token.php?command=request');
+				token = tokenRequest.data.token;
+				console.log(token);
+				localStorage.setItem('triviaToken', token);
+			} catch (e) {
+				console.log(e);
+			}
+		} else {
+			token = localStorage.triviaToken;
+		}
+
+		Object.entries(categoryIds).forEach((entry) => {
+			let difficulty = '';
+			if (entry[1] !== 'any') {
+				difficulty = `&difficulty=${entry[1]}`;
+			}
+			const category = `&category=${Number(entry[0]) + 9}`;
+			let url = `https://opentdb.com/api.php?amount=7${category}${difficulty}&type=multiple&token=${token}`;
+			const request = axios.get(url);
+			urls.push(url);
+			requests.push(request);
+		});
+
+		try {
+			const apiCall = await Promise.all(requests);
+			console.log(apiCall);
+
+			apiCall.forEach((result) => {
+				let questionsData = result.data.results;
+				questions.push(questionsData);
+			});
+
+			console.log(questions);
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
 	const backClick = () => {
 		if (!backActive) {
@@ -181,15 +226,13 @@ export default function SetUp() {
 				}
 				setCategoryIds(ids);
 				console.log(ids);
-				// Object.values(categories).forEach((bool, index) => {
-				// 	if (bool) {
-				// 		const id = index + 9;
-				// 		ids.push(id);
-				// 	}
-				// });
 			}
 			if (page < 2) {
 				setNextActive(false);
+			}
+			if (page === 3) {
+				startGame();
+				return;
 			}
 			setPage(page + 1);
 		}
