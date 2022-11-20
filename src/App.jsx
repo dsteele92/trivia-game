@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import Style from './app.module.scss';
+import { generateUrls } from './utilities';
 import { NextButton, BackButton, CharacterSelect, CategorySelect, StartGame, Game } from 'components';
 
 function App() {
@@ -41,6 +42,8 @@ function App() {
 	const [categoriesMinSet, setCategoriesMinSet] = useState(false);
 	const [categoryIds, setCategoryIds] = useState([]);
 	const [playGame, setPlayGame] = useState(false);
+	const [questions, setQuestions] = useState([]);
+	const [notes, setNotes] = useState({});
 
 	const categoriesList = [
 		'General Knowledge',
@@ -149,25 +152,15 @@ function App() {
 		}
 	};
 
-	let requests = [];
 	let token = '';
-	let questions = [];
 
-	const generateRequests = () => {
-		requests = [];
-		Object.entries(categoryIds).forEach((entry) => {
-			let difficulty = '';
-			if (entry[1] !== 'any') {
-				difficulty = `&difficulty=${entry[1]}`;
-			}
-			const category = `&category=${Number(entry[0]) + 9}`;
-			let url = `https://opentdb.com/api.php?amount=7${category}${difficulty}&type=multiple&token=${token}`;
-			const request = axios.get(url);
-			requests.push(request);
-		});
+	const newRequest = async (url) => {
+		const newRequest = await axios.get(url);
+		return newRequest.data;
 	};
 
 	const startGame = async () => {
+		let questions = [];
 		if (!sessionStorage.triviaToken) {
 			try {
 				const tokenRequest = await axios.get('https://opentdb.com/api_token.php?command=request');
@@ -181,8 +174,7 @@ function App() {
 		}
 
 		try {
-			generateRequests();
-			let apiCall = await Promise.all(requests);
+			let apiCall = await Promise.all(generateUrls(categoryIds, token).map(axios.get));
 			console.log(apiCall);
 
 			if (apiCall[0].data.response_code >= 3) {
@@ -192,28 +184,49 @@ function App() {
 				const tokenRequest = await axios.get('https://opentdb.com/api_token.php?command=request');
 				token = tokenRequest.data.token;
 				sessionStorage.setItem('triviaToken', token);
-				generateRequests();
-				apiCall = await Promise.all(requests);
+				apiCall = await Promise.all(generateUrls(categoryIds, token).map(axios.get));
 				console.log(apiCall);
 			}
 
 			// check response code for each object/category
 			apiCall.forEach((result, index) => {
 				if (result.data.response_code === 0) {
-					let questionsData = result.data.results;
+					const questionsData = result.data.results;
 					questions.push(questionsData);
 				}
 				if (result.data.response_code === 1) {
 					// Code 1: No Results Could not return results. The API doesn't have enough questions for your query. (Ex. Asking for 50 Questions in a Category that only has 20.)
 					// if difficulty was specified, change to ANY
-					if (categoryIds[index] !== 'any') {
-						categoryIds[index] = 'any';
+					const current = Object.entries(categoryIds)[index];
+					if (current[1] !== 'any') {
 						// recreate the url and rerun API call for this category and replace the questions data
+						// * add note
+						const category = `&category=${Number(current[0]) + 9}`;
+						let url = `https://opentdb.com/api.php?amount=7${category}&type=multiple&token=${token}`;
+						let newCall = newRequest(url);
+						if (newCall.response_code === 0) {
+							const questionsData = newCall.results;
+							questions.push(questionsData);
+						} else {
+							// if response_code is still 1, run request with no specified category or difficulty
+							// * add note
+							url = `https://opentdb.com/api.php?amount=7&type=multiple&token=${token}`;
+							newCall = newRequest(url);
+							const questionsData = newCall.results;
+							questions.push(questionsData);
+						}
+					} else {
+						// if difficulty was ANY, run request with no specified category or difficulty
+						// * add note
+						const url = `https://opentdb.com/api.php?amount=7&type=multiple&token=${token}`;
+						let newCall = newRequest(url);
+						const questionsData = newCall.results;
+						questions.push(questionsData);
 					}
-					// if difficulty was ANY, ask to choose replacement category
 				}
 			});
 			console.log(questions);
+			setQuestions(questions);
 		} catch (e) {
 			console.log(e);
 		}
@@ -362,7 +375,16 @@ function App() {
 					<NextButton active={nextActive} onClick={nextClick} page={page} />
 				</div>
 			) : (
-				<Game team1Name={team1Name} team2Name={team2Name} character1={character1} character2={character2} />
+				<Game
+					team1Name={team1Name}
+					team2Name={team2Name}
+					character1={character1}
+					character2={character2}
+					questions={questions}
+					rounds={rounds}
+					categoriesList={categoriesList}
+					categoryIds={categoryIds}
+				/>
 			)}
 		</div>
 	);
