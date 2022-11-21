@@ -152,11 +152,45 @@ function App() {
 		}
 	};
 
+	const playAgain = () => {
+		setCategories({
+			0: { selected: false, difficulty: 2 },
+			1: { selected: false, difficulty: 2 },
+			2: { selected: false, difficulty: 2 },
+			3: { selected: false, difficulty: 2 },
+			4: { selected: false, difficulty: 2 },
+			5: { selected: false, difficulty: 2 },
+			6: { selected: false, difficulty: 2 },
+			7: { selected: false, difficulty: 2 },
+			8: { selected: false, difficulty: 2 },
+			9: { selected: false, difficulty: 2 },
+			10: { selected: false, difficulty: 2 },
+			11: { selected: false, difficulty: 2 },
+			12: { selected: false, difficulty: 2 },
+			13: { selected: false, difficulty: 2 },
+			14: { selected: false, difficulty: 2 },
+			15: { selected: false, difficulty: 2 },
+			16: { selected: false, difficulty: 2 },
+			17: { selected: false, difficulty: 2 },
+			18: { selected: false, difficulty: 2 },
+			19: { selected: false, difficulty: 2 },
+			20: { selected: false, difficulty: 2 },
+			21: { selected: false, difficulty: 2 },
+			22: { selected: false, difficulty: 2 },
+			23: { selected: false, difficulty: 2 },
+		});
+		setCategoriesMinSet(false);
+		setNextActive(false);
+		setBackActive(true);
+		setPage(2);
+		setPlayGame(false);
+	};
+
 	let token = '';
 
 	const newRequest = async (url) => {
 		const newRequest = await axios.get(url);
-		return newRequest.data;
+		return newRequest;
 	};
 
 	const startGame = async () => {
@@ -177,10 +211,8 @@ function App() {
 			let apiCall = await Promise.all(generateUrls(categoryIds, token).map(axios.get));
 			console.log(apiCall);
 
-			if (apiCall[0].data.response_code >= 3) {
+			if (apiCall[0].data.response_code === 3) {
 				// Code 3: Token Not Found Session Token does not exist.
-				// Code 4: Token Empty Session Token has returned all possible questions for the specified query.
-				// retrieve new token and re-run API call
 				const tokenRequest = await axios.get('https://opentdb.com/api_token.php?command=request');
 				token = tokenRequest.data.token;
 				sessionStorage.setItem('triviaToken', token);
@@ -193,9 +225,9 @@ function App() {
 				if (result.data.response_code === 0) {
 					const questionsData = result.data.results;
 					questions.push(questionsData);
-				}
-				if (result.data.response_code === 1) {
+				} else {
 					// Code 1: No Results Could not return results. The API doesn't have enough questions for your query. (Ex. Asking for 50 Questions in a Category that only has 20.)
+					// Code 4: Token Empty Session Token has returned all possible questions for the specified query.
 					// if difficulty was specified, change to ANY
 					const current = Object.entries(categoryIds)[index];
 					if (current[1] !== 'any') {
@@ -205,14 +237,19 @@ function App() {
 						let url = `https://opentdb.com/api.php?amount=7${category}&type=multiple&token=${token}`;
 						let newCall = newRequest(url);
 						if (newCall.response_code === 0) {
-							const questionsData = newCall.results;
+							const questionsData = newCall.data.results;
+							console.log(newCall);
+							console.log(questionsData);
 							questions.push(questionsData);
 						} else {
 							// if response_code is still 1, run request with no specified category or difficulty
 							// * add note
 							url = `https://opentdb.com/api.php?amount=7&type=multiple&token=${token}`;
 							newCall = newRequest(url);
-							const questionsData = newCall.results;
+							// i think here it is not waiting for the api call to finish and trying to read the results before they are defined
+							const questionsData = newCall.data.results;
+							console.log(newCall);
+							console.log(questionsData);
 							questions.push(questionsData);
 						}
 					} else {
@@ -220,7 +257,9 @@ function App() {
 						// * add note
 						const url = `https://opentdb.com/api.php?amount=7&type=multiple&token=${token}`;
 						let newCall = newRequest(url);
-						const questionsData = newCall.results;
+						const questionsData = newCall.data.results;
+						console.log(newCall);
+						console.log(questionsData);
 						questions.push(questionsData);
 					}
 				}
@@ -336,7 +375,11 @@ function App() {
 									? Style.Character1
 									: Style.Character1Below
 							}>
-							<CharacterSelect teamName={team1Name} selectCharacter={selectCharacter1} />
+							<CharacterSelect
+								teamName={team1Name}
+								selectCharacter={selectCharacter1}
+								character={character1}
+							/>
 						</div>
 						<div
 							className={
@@ -346,7 +389,11 @@ function App() {
 									? Style.Character2
 									: Style.Character2Below
 							}>
-							<CharacterSelect teamName={team2Name} selectCharacter={selectCharacter2} />
+							<CharacterSelect
+								teamName={team2Name}
+								selectCharacter={selectCharacter2}
+								character={character2}
+							/>
 						</div>
 						<div
 							className={
@@ -357,6 +404,7 @@ function App() {
 								selectDifficulty={selectDifficulty}
 								selectRounds={selectRounds}
 								categoriesList={categoriesList}
+								rounds={rounds}
 							/>
 						</div>
 						<div className={page < 3 ? Style.StartGameAbove : Style.StartGame}>
@@ -384,6 +432,7 @@ function App() {
 					rounds={rounds}
 					categoriesList={categoriesList}
 					categoryIds={categoryIds}
+					playAgain={playAgain}
 				/>
 			)}
 		</div>

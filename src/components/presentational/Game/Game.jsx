@@ -7,9 +7,11 @@ import { NextButton, BackButton, CharacterSelect, CategorySelect, StartGame } fr
 export default function Game(props) {
 	const [team1Score, setTeam1Score] = useState(0);
 	const [team2Score, setTeam2Score] = useState(0);
+	const [team1Total, setTeam1Total] = useState(0);
+	const [team2Total, setTeam2Total] = useState(0);
 	const [roundScores, setRoundScores] = useState([]);
 	const [currentRound, setCurrentRound] = useState(0);
-	const [currentTeam, setCurrentTeam] = useState(1);
+	const [currentTeam, setCurrentTeam] = useState(0);
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [currentAnswers, setCurrentAnswers] = useState([]);
 	const [answerIndex, setAnswerIndex] = useState(0);
@@ -41,9 +43,27 @@ export default function Game(props) {
 
 			if (currentTeam === 1) {
 				setTeam1Score(team1Score + 1);
+				setCurrentRoundResults(
+					currentRoundResults.map((result, index) => {
+						if (index !== currentQuestion) {
+							return result;
+						} else {
+							return 1;
+						}
+					})
+				);
 			}
 			if (currentTeam === 2) {
 				setTeam2Score(team2Score + 1);
+				setCurrentRoundResults(
+					currentRoundResults.map((result, index) => {
+						if (index !== currentQuestion) {
+							return result;
+						} else {
+							return 2;
+						}
+					})
+				);
 			}
 		} else {
 			if (currentTeam === 1) {
@@ -78,6 +98,11 @@ export default function Game(props) {
 				setCurrentQuestion(currentQuestion + 1);
 			} else {
 				setRoundEnd(true);
+				if (team1Score > team2Score) {
+					setTeam1Total(team1Total + 1);
+				} else {
+					setTeam2Total(team2Total + 1);
+				}
 				setCurrentTeam(0);
 				let roundScore = [];
 				roundScore.push(team1Score);
@@ -99,6 +124,7 @@ export default function Game(props) {
 		setCurrentQuestion(0);
 		setTeam1Score(0);
 		setTeam2Score(0);
+		setCurrentRoundResults([0, 0, 0, 0, 0, 0, 0]);
 		setRoundEnd(false);
 	};
 
@@ -194,13 +220,19 @@ export default function Game(props) {
 	return (
 		<div className={Style.Game}>
 			<section className={Style.Points}>
-				<div className={Style.Point}>1</div>
-				<div className={Style.Point}>2</div>
-				<div className={Style.Point}>3</div>
-				<div className={Style.Point}>4</div>
-				<div className={Style.Point}>5</div>
-				<div className={Style.Point}>6</div>
-				<div className={Style.Point}>7</div>
+				{currentRoundResults.map((result, index) => (
+					<div
+						key={index}
+						className={
+							result === 1
+								? Style[`Point${props.character1}`]
+								: result === 2
+								? Style[`Point${props.character2}`]
+								: Style.Point
+						}>
+						{result === 0 && <p>{index + 1}</p>}
+					</div>
+				))}
 			</section>
 			<section className={Style.Tracker}>
 				<div className={Style.Team}>
@@ -237,17 +269,80 @@ export default function Game(props) {
 						{currentRound === 0 && currentQuestion === 0 ? (
 							<div className={Style.Transition}>
 								<div>Instructions</div>
-								<button onClick={() => setRoundEnd(false)}>Start</button>
+								<button
+									onClick={() => {
+										setRoundEnd(false);
+										setCurrentTeam(1);
+									}}>
+									Begin Round 1
+								</button>
 							</div>
 						) : (
 							<div className={Style.Transition}>
-								<div>{`Round ${currentRound} results`}</div>
-								<button onClick={nextRound}>{`Begin Round ${currentRound + 2}`}</button>
+								{Object.entries(props.categoryIds).map((entry, index) => (
+									<div
+										key={index}
+										className={roundScores.length > index ? Style.RoundComplete : Style.Round}>
+										{roundScores.length > index && (
+											<div className={Style.Score}>
+												<div className={Style[`TeamLeft${props.character1}`]}>
+													<h4>{roundScores[index][0]}</h4>
+												</div>
+												<div className={Style[`TeamRight${props.character2}`]}>
+													<h4>{roundScores[index][1]}</h4>
+												</div>
+											</div>
+										)}
+										<div
+											className={
+												roundScores.length <= index
+													? Style.Info
+													: roundScores[index][0] > roundScores[index][1]
+													? Style[`Info${props.character1}`]
+													: Style[`Info${props.character2}`]
+											}>
+											<div className={Style.Number}>
+												<h4>Round</h4>
+												<div>{index + 1}</div>
+											</div>
+											<div className={Style.Category}>
+												<p>{props.categoriesList[entry[0]]}</p>
+											</div>
+											<div className={Style.Difficulty}>
+												<h4>{entry[1]}</h4>
+											</div>
+										</div>
+									</div>
+								))}
+								{currentRound + 1 < props.rounds ? (
+									<button onClick={nextRound}>{`Begin Round ${currentRound + 2}`}</button>
+								) : (
+									<div className={Style.EndGame}>
+										<h1>{team1Total > team2Total ? props.team1Name : props.team2Name} Wins</h1>
+										<button onClick={props.playAgain}>Play Again</button>
+									</div>
+								)}
 							</div>
 						)}
 					</div>
 				) : (
 					<div className={Style.Display}>
+						{currentTeam > 0 && (
+							<div className={Style.TurnIndicator}>
+								<div
+									className={
+										currentTeam === 1
+											? Style[`TurnLeft${props.character1}`]
+											: `${Style[`TurnLeft${props.character1}`]} ${Style.Hide}`
+									}></div>
+								<div
+									className={
+										currentTeam === 2
+											? Style[`TurnRight${props.character2}`]
+											: `${Style[`TurnRight${props.character2}`]} ${Style.Hide}`
+									}></div>
+							</div>
+						)}
 						<div className={Style.Question}>
 							<p className={Style.CurrentTeam}>
 								{currentTeam === 1 ? props.team1Name : props.team2Name},

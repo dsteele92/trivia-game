@@ -32,7 +32,7 @@ export default function CategorySelect(props) {
 		23: { selected: false, difficulty: 2 },
 	});
 	const [categoriesSelected, setCategoriesSelected] = useState(0);
-	const [rounds, setRounds] = useState(5);
+	const [rounds, setRounds] = useState(props.rounds);
 
 	const selectCategory = (catId) => {
 		if (categories[catId].selected) {

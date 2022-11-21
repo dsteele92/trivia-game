@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Style from './characterSelect.module.scss';
 
 export default function CharacterSelect(props) {
-	const [character, setCharacter] = useState(0);
+	const [character, setCharacter] = useState(props.character);
 
 	const characters = ['aang', 'katara', 'sokka', 'zuko', 'iroh', 'toph', 'azula', 'appa'];
 
