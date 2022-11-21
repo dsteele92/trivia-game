@@ -60,21 +60,46 @@ export default function Game(props) {
 		} else {
 			setFlipped([false, false, false, false]);
 			setNextActive(false);
+
 			if (currentQuestion < 6) {
+				if ((currentRound + 1) % 2 === 0) {
+					if ((currentQuestion + 2) % 2 === 0) {
+						setCurrentTeam(1);
+					} else {
+						setCurrentTeam(2);
+					}
+				} else {
+					if ((currentQuestion + 2) % 2 === 0) {
+						setCurrentTeam(2);
+					} else {
+						setCurrentTeam(1);
+					}
+				}
 				setCurrentQuestion(currentQuestion + 1);
 			} else {
 				setRoundEnd(true);
-				setCurrentRound(currentRound + 1);
-				setCurrentQuestion(0);
+				setCurrentTeam(0);
 				let roundScore = [];
 				roundScore.push(team1Score);
 				roundScore.push(team2Score);
-				setRoundScores([...roundScores].push(roundScore));
-				console.log(roundScores);
-				setTeam1Score(0);
-				setTeam2Score(0);
+				const update = [...roundScores, roundScore];
+				setRoundScores(update);
+				console.log(update);
 			}
 		}
+	};
+
+	const nextRound = () => {
+		if ((currentRound + 2) % 2 === 0) {
+			setCurrentTeam(2);
+		} else {
+			setCurrentTeam(1);
+		}
+		setCurrentRound(currentRound + 1);
+		setCurrentQuestion(0);
+		setTeam1Score(0);
+		setTeam2Score(0);
+		setRoundEnd(false);
 	};
 
 	const entities = {
@@ -209,7 +234,7 @@ export default function Game(props) {
 			<main className={Style.Play}>
 				{roundEnd ? (
 					<div className={Style.Display}>
-						{currentRound === 0 ? (
+						{currentRound === 0 && currentQuestion === 0 ? (
 							<div className={Style.Transition}>
 								<div>Instructions</div>
 								<button onClick={() => setRoundEnd(false)}>Start</button>
@@ -217,7 +242,7 @@ export default function Game(props) {
 						) : (
 							<div className={Style.Transition}>
 								<div>{`Round ${currentRound} results`}</div>
-								<button onClick={() => setRoundEnd(false)}>{`Begin Round ${currentRound + 1}`}</button>
+								<button onClick={nextRound}>{`Begin Round ${currentRound + 2}`}</button>
 							</div>
 						)}
 					</div>
