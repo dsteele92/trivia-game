@@ -44,6 +44,7 @@ function App() {
 	const [playGame, setPlayGame] = useState(false);
 	const [questions, setQuestions] = useState([]);
 	const [notes, setNotes] = useState({});
+	const [loading, setLoading] = useState(false);
 
 	const categoriesList = [
 		'General Knowledge',
@@ -103,6 +104,50 @@ function App() {
 			setBackActive(false);
 		}
 	}, [page, team1Name, team2Name, character1, character2, categories, categoriesMinSet]);
+
+	const backClick = () => {
+		if (!backActive) {
+			return;
+		} else {
+			setPage(page - 1);
+		}
+	};
+	const nextClick = () => {
+		if (!nextActive) {
+			return;
+		} else {
+			if (page === 2) {
+				const ids = {};
+				while (Object.keys(ids).length < rounds) {
+					Object.values(categories).forEach((info, index) => {
+						let difficulty;
+						if (info.difficulty === 0) {
+							difficulty = 'any';
+						} else if (info.difficulty === 1) {
+							difficulty = 'easy';
+						} else if (info.difficulty === 2) {
+							difficulty = 'medium';
+						} else if (info.difficulty === 3) {
+							difficulty = 'hard';
+						}
+						if (info.selected) {
+							ids[index] = difficulty;
+						}
+					});
+				}
+				setCategoryIds(ids);
+				// console.log(ids);
+			}
+			if (page < 2) {
+				setNextActive(false);
+			}
+			if (page === 3) {
+				startGame();
+				return;
+			}
+			setPage(page + 1);
+		}
+	};
 
 	const selectCharacter1 = (charId) => {
 		if (character1 === charId) {
@@ -183,6 +228,8 @@ function App() {
 	let token = '';
 
 	const startGame = async () => {
+		setLoading(true);
+
 		let questions = [];
 		if (!sessionStorage.triviaToken) {
 			try {
@@ -268,51 +315,8 @@ function App() {
 			console.log(e);
 		}
 
+		setLoading(false);
 		setPlayGame(true);
-	};
-
-	const backClick = () => {
-		if (!backActive) {
-			return;
-		} else {
-			setPage(page - 1);
-		}
-	};
-	const nextClick = () => {
-		if (!nextActive) {
-			return;
-		} else {
-			if (page === 2) {
-				const ids = {};
-				while (Object.keys(ids).length < rounds) {
-					Object.values(categories).forEach((info, index) => {
-						let difficulty;
-						if (info.difficulty === 0) {
-							difficulty = 'any';
-						} else if (info.difficulty === 1) {
-							difficulty = 'easy';
-						} else if (info.difficulty === 2) {
-							difficulty = 'medium';
-						} else if (info.difficulty === 3) {
-							difficulty = 'hard';
-						}
-						if (info.selected) {
-							ids[index] = difficulty;
-						}
-					});
-				}
-				setCategoryIds(ids);
-				// console.log(ids);
-			}
-			if (page < 2) {
-				setNextActive(false);
-			}
-			if (page === 3) {
-				startGame();
-				return;
-			}
-			setPage(page + 1);
-		}
 	};
 
 	return (
@@ -418,8 +422,10 @@ function App() {
 						</div>
 					</main>
 					<BackButton active={backActive} onClick={backClick} />
-					<NextButton active={nextActive} onClick={nextClick} page={page} />
+					<NextButton active={nextActive} onClick={nextClick} page={page} loading={loading} />
 				</div>
+			) : loading ? (
+				<div>Loading</div>
 			) : (
 				<Game
 					team1Name={team1Name}

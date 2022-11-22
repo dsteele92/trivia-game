@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import Style from './startGame.module.scss';
 
-export default function SelectGame(props) {
-	// const categories = [];
-	// Object.keys(props.categoryIds).forEach((catId) => {
-	// 	const cat = props.categoriesList[catId];
-	// 	categories.push(cat);
-	// });
-
+export default function StartGame(props) {
 	return (
 		<div className={Style.StartGame}>
 			<section className={Style.Matchup}>

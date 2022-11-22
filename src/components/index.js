@@ -1,5 +1,6 @@
 export { default as NextButton } from './general/NextButton/NextButton.jsx';
 export { default as BackButton } from './general/BackButton/BackButton.jsx';
+export { default as LoadingSpinner } from './general/LoadingSpinner/LoadingSpinner.jsx';
 
 export { default as CharacterSelect } from './presentational/CharacterSelect/CharacterSelect.jsx';
 export { default as CategorySelect } from './presentational/CategorySelect/CategorySelect.jsx';

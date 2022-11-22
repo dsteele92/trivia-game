@@ -209,7 +209,7 @@
 				width: 30%;
 			}
 		}
-		.Score {
+		.Center {
 			height: 100%;
 			width: 200px;
 			// background-color: grey;
@@ -233,9 +233,15 @@
 				}
 			}
 			.Score {
-				letter-spacing: 2pt;
-				font-size: 60px;
-				font-weight: 300;
+				p {
+					letter-spacing: 2pt;
+					font-size: 60px;
+					font-weight: 300;
+					.Win {
+						// color: $color-gold;
+						// text-shadow: 0 0 10px $color-gold;
+					}
+				}
 			}
 		}
 	}

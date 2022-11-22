@@ -10,7 +10,15 @@ export default function NextButton(props) {
 				<GiSlicingArrow />
 			</div>
 			<div className={props.page === 3 ? Style.Start : Style.StartHide}></div>
-			<p>{props.page < 3 ? 'Next' : 'Start'}</p>
+			{!props.loading ? (
+				<p>{props.page < 3 ? 'Next' : 'Start'}</p>
+			) : (
+				<div className={Style.Ellipsis}>
+					<span className={Style.One}>.</span>
+					<span className={Style.Two}>.</span>
+					<span className={Style.Three}>.</span>
+				</div>
+			)}
 		</button>
 	);
 }

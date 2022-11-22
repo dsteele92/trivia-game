@@ -2,7 +2,6 @@ import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import Style from './game.module.scss';
 import { FaCheck, FaTimes } from 'react-icons/fa';
-import { NextButton, BackButton, CharacterSelect, CategorySelect, StartGame } from 'components';
 
 export default function Game(props) {
 	const [team1Score, setTeam1Score] = useState(0);
@@ -243,7 +242,7 @@ export default function Game(props) {
 					</div>
 					<div className={Style.RoundTracker}></div>
 				</div>
-				<div className={Style.Score}>
+				<div className={Style.Center}>
 					<div className={Style.Round}>
 						<h3>{`Round ${currentRound + 1}`}</h3>
 						<h4 className={Style.CurrentCategory}>
@@ -251,7 +250,10 @@ export default function Game(props) {
 						</h4>
 					</div>
 					<div className={Style.Score}>
-						{team1Score}-{team2Score}
+						<p>
+							<span className={team1Score >= 4 ? Style.Win : ''}>{team1Score}</span>-
+							<span className={team2Score >= 4 ? Style.Win : ''}>{team2Score}</span>
+						</p>
 					</div>
 				</div>
 				<div className={Style.Team}>
