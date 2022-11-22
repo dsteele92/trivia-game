@@ -266,9 +266,43 @@ export default function Game(props) {
 			<main className={Style.Play}>
 				{roundEnd ? (
 					<div className={Style.Display}>
-						{currentRound === 0 && currentQuestion === 0 ? (
-							<div className={Style.Transition}>
-								<div>Instructions</div>
+						<div className={Style.Transition}>
+							{Object.entries(props.categoryIds).map((entry, index) => (
+								<div
+									key={index}
+									className={roundScores.length > index ? Style.RoundComplete : Style.Round}>
+									{roundScores.length > index && (
+										<div className={Style.Score}>
+											<div className={Style[`TeamLeft${props.character1}`]}>
+												<h4>{roundScores[index][0]}</h4>
+											</div>
+											<div className={Style[`TeamRight${props.character2}`]}>
+												<h4>{roundScores[index][1]}</h4>
+											</div>
+										</div>
+									)}
+									<div
+										className={
+											roundScores.length <= index
+												? Style.Info
+												: roundScores[index][0] > roundScores[index][1]
+												? Style[`Info${props.character1}`]
+												: Style[`Info${props.character2}`]
+										}>
+										<div className={Style.Number}>
+											<h4>Round</h4>
+											<div>{index + 1}</div>
+										</div>
+										<div className={Style.Category}>
+											<p>{props.categoriesList[entry[0]]}</p>
+										</div>
+										<div className={Style.Difficulty}>
+											<h4>{entry[1]}</h4>
+										</div>
+									</div>
+								</div>
+							))}
+							{currentRound === 0 && currentQuestion === 0 ? (
 								<button
 									onClick={() => {
 										setRoundEnd(false);
@@ -276,54 +310,16 @@ export default function Game(props) {
 									}}>
 									Begin Round 1
 								</button>
-							</div>
-						) : (
-							<div className={Style.Transition}>
-								{Object.entries(props.categoryIds).map((entry, index) => (
-									<div
-										key={index}
-										className={roundScores.length > index ? Style.RoundComplete : Style.Round}>
-										{roundScores.length > index && (
-											<div className={Style.Score}>
-												<div className={Style[`TeamLeft${props.character1}`]}>
-													<h4>{roundScores[index][0]}</h4>
-												</div>
-												<div className={Style[`TeamRight${props.character2}`]}>
-													<h4>{roundScores[index][1]}</h4>
-												</div>
-											</div>
-										)}
-										<div
-											className={
-												roundScores.length <= index
-													? Style.Info
-													: roundScores[index][0] > roundScores[index][1]
-													? Style[`Info${props.character1}`]
-													: Style[`Info${props.character2}`]
-											}>
-											<div className={Style.Number}>
-												<h4>Round</h4>
-												<div>{index + 1}</div>
-											</div>
-											<div className={Style.Category}>
-												<p>{props.categoriesList[entry[0]]}</p>
-											</div>
-											<div className={Style.Difficulty}>
-												<h4>{entry[1]}</h4>
-											</div>
-										</div>
-									</div>
-								))}
-								{currentRound + 1 < props.rounds ? (
-									<button onClick={nextRound}>{`Begin Round ${currentRound + 2}`}</button>
-								) : (
-									<div className={Style.EndGame}>
-										<h1>{team1Total > team2Total ? props.team1Name : props.team2Name} Wins</h1>
-										<button onClick={props.playAgain}>Play Again</button>
-									</div>
-								)}
-							</div>
-						)}
+							) : currentRound + 1 < props.rounds ? (
+								<button onClick={nextRound}>{`Begin Round ${currentRound + 2}`}</button>
+							) : (
+								<div className={Style.EndGame}>
+									<h1>{team1Total > team2Total ? props.team1Name : props.team2Name} Wins</h1>
+									<button onClick={props.playAgain}>Play Again</button>
+								</div>
+							)}
+							<div className={Style.Instructions}>?</div>
+						</div>
 					</div>
 				) : (
 					<div className={Style.Display}>

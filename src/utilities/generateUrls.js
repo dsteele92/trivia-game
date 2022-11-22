@@ -9,6 +9,6 @@ export default function generateUrls(categoryIds, token) {
 		let url = `https://opentdb.com/api.php?amount=7${category}${difficulty}&type=multiple&token=${token}`;
 		urls.push(url);
 	});
-	console.log(urls);
+	// console.log(urls);
 	return urls;
 }

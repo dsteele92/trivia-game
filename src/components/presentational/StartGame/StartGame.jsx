@@ -37,6 +37,7 @@ export default function SelectGame(props) {
 					</div>
 				))}
 			</section>
+			<div className={Style.Instructions}>?</div>
 		</div>
 	);
 }

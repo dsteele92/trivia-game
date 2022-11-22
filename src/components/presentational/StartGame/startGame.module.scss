@@ -153,4 +153,8 @@
 			}
 		}
 	}
+
+	.Instructions {
+		@include instructions;
+	}
 }

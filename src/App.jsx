@@ -120,15 +120,9 @@ function App() {
 	};
 
 	const selectCategory = (catId, totalCat) => {
-		if (categories[catId].selected) {
-			const catRemoved = { ...categories };
-			catRemoved[catId].selected = false;
-			setCategories(catRemoved);
-		} else {
-			const catAdded = { ...categories };
-			catAdded[catId].selected = true;
-			setCategories(catAdded);
-		}
+		const catUpdated = { ...categories };
+		catUpdated[catId].selected = !categories[catId].selected;
+		setCategories(catUpdated);
 
 		if (totalCat === rounds) {
 			setCategoriesMinSet(true);
@@ -188,11 +182,6 @@ function App() {
 
 	let token = '';
 
-	const newRequest = async (url) => {
-		const newRequest = await axios.get(url);
-		return newRequest;
-	};
-
 	const startGame = async () => {
 		let questions = [];
 		if (!sessionStorage.triviaToken) {
@@ -216,14 +205,21 @@ function App() {
 				const tokenRequest = await axios.get('https://opentdb.com/api_token.php?command=request');
 				token = tokenRequest.data.token;
 				sessionStorage.setItem('triviaToken', token);
-				apiCall = await Promise.all(generateUrls(categoryIds, token).map(axios.get));
+				const urls = generateUrls(categoryIds, token);
+				const apiCall = [];
+				for (const url of urls) {
+					const result = await axios.get(url);
+					apiCall.push(result);
+				}
+				// apiCall = await Promise.all(generateUrls(categoryIds, token).map(axios.get));
+
 				console.log(apiCall);
 			}
 
 			// check response code for each object/category
-			apiCall.forEach((result, index) => {
-				if (result.data.response_code === 0) {
-					const questionsData = result.data.results;
+			for (let index = 0; index < apiCall.length; index++) {
+				if (apiCall[index].data.response_code === 0) {
+					const questionsData = apiCall[index].data.results;
 					questions.push(questionsData);
 				} else {
 					// Code 1: No Results Could not return results. The API doesn't have enough questions for your query. (Ex. Asking for 50 Questions in a Category that only has 20.)
@@ -235,35 +231,37 @@ function App() {
 						// * add note
 						const category = `&category=${Number(current[0]) + 9}`;
 						let url = `https://opentdb.com/api.php?amount=7${category}&type=multiple&token=${token}`;
-						let newCall = newRequest(url);
-						if (newCall.response_code === 0) {
+						let newCall = await axios.get(url);
+						if (newCall.data.response_code === 0) {
 							const questionsData = newCall.data.results;
-							console.log(newCall);
-							console.log(questionsData);
 							questions.push(questionsData);
+							let updatedNotes = { ...notes };
+							updatedNotes[index] = 1;
+							setNotes(updatedNotes);
 						} else {
 							// if response_code is still 1, run request with no specified category or difficulty
 							// * add note
 							url = `https://opentdb.com/api.php?amount=7&type=multiple&token=${token}`;
-							newCall = newRequest(url);
-							// i think here it is not waiting for the api call to finish and trying to read the results before they are defined
+							newCall = await axios.get(url);
 							const questionsData = newCall.data.results;
-							console.log(newCall);
-							console.log(questionsData);
+							let updatedNotes = { ...notes };
+							updatedNotes[index] = 2;
+							setNotes(updatedNotes);
 							questions.push(questionsData);
 						}
 					} else {
 						// if difficulty was ANY, run request with no specified category or difficulty
 						// * add note
 						const url = `https://opentdb.com/api.php?amount=7&type=multiple&token=${token}`;
-						let newCall = newRequest(url);
+						const newCall = await axios.get(url);
 						const questionsData = newCall.data.results;
-						console.log(newCall);
-						console.log(questionsData);
+						let updatedNotes = { ...notes };
+						updatedNotes[index] = 2;
+						setNotes(updatedNotes);
 						questions.push(questionsData);
 					}
 				}
-			});
+			}
 			console.log(questions);
 			setQuestions(questions);
 		} catch (e) {
@@ -304,7 +302,7 @@ function App() {
 					});
 				}
 				setCategoryIds(ids);
-				console.log(ids);
+				// console.log(ids);
 			}
 			if (page < 2) {
 				setNextActive(false);
