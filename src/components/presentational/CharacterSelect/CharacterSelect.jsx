@@ -17,7 +17,9 @@ export default function CharacterSelect(props) {
 
 	return (
 		<div className={Style.CharacterSelect}>
-			<h3>Select Character - {props.teamName}</h3>
+			<h3>
+				Select Character - <span>{props.teamName}</span>
+			</h3>
 			<div className={Style.CharacterList}>
 				{characters.map((char, index) => (
 					<div key={index + 1} className={character === index + 1 ? Style.Selected : Style.Unselected}>

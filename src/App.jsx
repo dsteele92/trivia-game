@@ -324,20 +324,18 @@ function App() {
 			{!playGame ? (
 				<div className={Style.SetUp}>
 					<section className={Style.ToDo}>
-						<div className={page === 0 ? Style.ToDoItemCurrent : Style.ToDoItemComplete}>
-							Set Team Names
-						</div>
+						<div className={page === 0 ? Style.ToDoItemCurrent : Style.ToDoItemComplete}>Team Names</div>
 						<div
 							className={
 								page === 1 ? Style.ToDoItemCurrent : page > 1 ? Style.ToDoItemComplete : Style.ToDoItem
 							}>
-							Select Characters
+							Characters
 						</div>
 						<div
 							className={
 								page === 2 ? Style.ToDoItemCurrent : page > 2 ? Style.ToDoItemComplete : Style.ToDoItem
 							}>
-							Select Categories
+							Categories
 						</div>
 						<div className={page === 3 ? Style.ToDoItemCurrent : Style.ToDoItem}>Start Game</div>
 						<div className={Style[`AppaFly${page}`]}></div>

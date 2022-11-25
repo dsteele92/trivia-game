@@ -6,6 +6,20 @@
 	background-color: $color-background;
 	@include flex-center;
 
+	@media screen and (orientation: landscape) and (max-height: $breakpoint-tablet) {
+		/* Rotate the content container */
+		transform: rotate(-90deg);
+		transform-origin: left top;
+		/* Set content width to viewport height */
+		width: 100vh;
+		/* Set content height to viewport width */
+		height: 100vw;
+		overflow-x: hidden;
+		position: absolute;
+		top: 100%;
+		left: 0;
+	}
+
 	.SetUp {
 		position: relative;
 		height: 95%;
@@ -13,6 +27,13 @@
 		max-width: 960px;
 		max-height: 1080px;
 		border-radius: 20px;
+
+		@media screen and (max-width: $breakpoint-tablet) {
+			height: 100%;
+			width: 100%;
+			border-radius: 0px;
+		}
+
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
@@ -26,10 +47,10 @@
 		.ToDo {
 			z-index: 0;
 			position: relative;
-			border-radius: 20px 20px 0 0;
+			// border-radius: 20px 20px 0 0;
 			width: 100%;
 			height: 17%;
-			min-height: 150px;
+			min-height: 130px;
 
 			background-image: url('./assets/sky.jpg');
 			background-size: cover;
@@ -37,12 +58,12 @@
 
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
+			@media screen and (max-width: $breakpoint-mobile) {
+				grid-template-columns: 1fr;
+				grid-template-rows: repeat(4, 1fr);
+			}
 
 			.ToDoItem {
-				// border: 2px solid black;
-				// height: 90px;
-				// width: 90px;
-				// border-radius: 50%;
 				z-index: 1;
 				height: 100%;
 				width: 100%;
@@ -50,13 +71,16 @@
 				transition: all 1s cubic-bezier(0.39, 0.575, 0.565, 1);
 				@include flex-center;
 				font-size: 20px;
-				// text-transform: uppercase;
 				letter-spacing: 0.5pt;
+				text-transform: uppercase;
+				font-weight: 300;
+
+				@media screen and (max-width: $breakpoint-tablet) {
+					font-size: 16px;
+				}
 
 				&Current {
 					@extend .ToDoItem;
-
-					// box-shadow: inset 0 0 10px 2px white;
 				}
 				&Complete {
 					@extend .ToDoItem;
@@ -74,25 +98,73 @@
 				background-position: bottom;
 				transition: 1.5s all cubic-bezier(0.445, 0.05, 0.55, 0.95);
 
+				@media screen and (max-width: $breakpoint-tablet) {
+					height: 40px;
+					width: 75px;
+				}
+
 				&0 {
 					@extend .AppaFly;
 					left: 7%;
 					bottom: 0;
+					@media screen and (max-width: $breakpoint-tablet) {
+						bottom: 10%;
+					}
+					@media screen and (max-width: $breakpoint-mobile) {
+						top: 3%;
+						left: 15%;
+					}
+					@media screen and (max-width: 370px) {
+						left: 8%;
+					}
 				}
 				&1 {
 					@extend .AppaFly;
 					left: 33%;
 					bottom: 55%;
+					@media screen and (max-width: $breakpoint-tablet) {
+						left: 30%;
+						bottom: 65%;
+					}
+					@media screen and (max-width: $breakpoint-mobile) {
+						top: 22%;
+						left: 15%;
+					}
+					@media screen and (max-width: 370px) {
+						left: 8%;
+					}
 				}
 				&2 {
 					@extend .AppaFly;
 					left: 57%;
 					bottom: 0;
+					@media screen and (max-width: $breakpoint-tablet) {
+						left: 55%;
+						bottom: 10%;
+					}
+					@media screen and (max-width: $breakpoint-mobile) {
+						top: 47%;
+						left: 15%;
+					}
+					@media screen and (max-width: 370px) {
+						left: 8%;
+					}
 				}
 				&3 {
 					@extend .AppaFly;
 					left: 82%;
 					bottom: 55%;
+					@media screen and (max-width: $breakpoint-tablet) {
+						left: 80%;
+						bottom: 65%;
+					}
+					@media screen and (max-width: $breakpoint-mobile) {
+						top: 70%;
+						left: 15%;
+					}
+					@media screen and (max-width: 370px) {
+						left: 8%;
+					}
 				}
 			}
 		}
@@ -101,6 +173,9 @@
 			// margin-top: 3%;
 			height: 68%;
 			width: 85%;
+			@media screen and (max-height: 750px) {
+				height: 65%;
+			}
 			overflow: hidden;
 			@mixin SetUp {
 				position: absolute;
@@ -115,13 +190,16 @@
 				justify-content: flex-start;
 				align-items: flex-start;
 				background-color: rgb(248, 254, 255);
+
+				@media screen and (max-width: $breakpoint-tablet) {
+					width: 95%;
+				}
 			}
 			.Name {
 				@include SetUp();
 				padding: 5% 8%;
 
 				.InputDiv {
-					// align-self: center;
 					position: absolute;
 					top: 50%;
 					left: 50%;
@@ -137,9 +215,11 @@
 					}
 					input {
 						width: 250px;
+						@media screen and (max-width: $breakpoint-tablet) {
+							width: 200px;
+						}
 						height: 50px;
 						text-align: center;
-						margin-left: 10px;
 						border: none;
 						border-radius: 20px;
 						background-color: rgba($color: $color-teal, $alpha: 0.5);
@@ -209,6 +289,9 @@
 				@include SetUp();
 				height: 90%;
 				width: 100%;
+				@media screen and (max-width: $breakpoint-tablet) {
+					width: 100%;
+				}
 				top: 5%;
 				left: 0;
 				transition-delay: 0.5s;
@@ -227,6 +310,9 @@
 				@include SetUp();
 				height: 90%;
 				width: 100%;
+				@media screen and (max-width: $breakpoint-tablet) {
+					width: 100%;
+				}
 				top: 5%;
 				left: 0;
 				padding: 0 5% 2%;

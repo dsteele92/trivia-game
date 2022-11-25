@@ -10,6 +10,12 @@
 
 	h3 {
 		align-self: flex-start;
+		text-transform: uppercase;
+		font-weight: 300;
+		font-size: 20px;
+		span {
+			font-weight: 500;
+		}
 	}
 
 	.CharacterList {
@@ -35,6 +41,19 @@
 			width: 80px;
 			height: 80px;
 			margin: 10px 20px;
+			@media screen and (max-width: 850px) {
+				margin: 10px 10px;
+			}
+			@media screen and (max-width: 850px) {
+				width: 70px;
+				height: 70px;
+				margin: 10px 10px;
+			}
+			@media screen and (max-width: $breakpoint-mobile) {
+				width: 55px;
+				height: 55px;
+				margin: 5px 5px;
+			}
 			border-radius: 50%;
 			box-sizing: border-box;
 			overflow: hidden;
@@ -53,8 +72,8 @@
 		}
 
 		.Character {
-			width: 80px;
-			height: 80px;
+			width: 100%;
+			height: 100%;
 			border-radius: 50%;
 			overflow: hidden;
 			background-size: cover;

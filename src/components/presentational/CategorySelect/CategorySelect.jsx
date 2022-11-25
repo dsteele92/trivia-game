@@ -102,9 +102,9 @@ export default function CategorySelect(props) {
 			</div>
 			<h2>Select Categories - Pick {rounds}:</h2>
 			<div className={Style.CategoryList}>
-				{props.categoriesList.map((char, index) => (
+				{props.categoriesList.map((cat, index) => (
 					<div key={index} className={categories[index].selected ? Style.Selected : Style.Unselected}>
-						<p>{char}</p>
+						<p>{cat}</p>
 						<div className={Style.ClickableArea} onClick={() => selectCategory(index)}></div>
 						{categories[index].selected ? (
 							<div className={Style.Difficulty}>

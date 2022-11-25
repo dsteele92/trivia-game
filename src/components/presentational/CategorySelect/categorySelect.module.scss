@@ -11,6 +11,15 @@
 	h2 {
 		align-self: flex-start;
 		margin-bottom: 2%;
+		text-transform: uppercase;
+		font-weight: 300;
+		font-size: 24px;
+		@media screen and (max-width: $breakpoint-tablet) {
+			font-size: 22px;
+		}
+		@media screen and (max-width: $breakpoint-mobile) {
+			font-size: 18px;
+		}
 	}
 
 	.SelectRounds {
@@ -61,15 +70,25 @@
 			@include flex-center;
 			cursor: pointer;
 			position: relative;
+			transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+			padding: 0 5%;
+			text-align: center;
 
 			.Difficulty {
 				z-index: 0;
 				position: absolute;
 				height: 100%;
 				width: 20%;
+				@media screen and (max-width: $breakpoint-tablet) {
+					// width: 15%;
+				}
+				@media screen and (max-width: $breakpoint-mobile) {
+					// width: 10%;
+				}
 				top: 0;
 				right: -20%;
-				background-color: rgba($color: $color-teal, $alpha: 0.5);
+				// background-color: rgba($color: $color-teal, $alpha: 0.5);
+				background: linear-gradient(to left, #17c3b27d 75%, white);
 				@include flex-center;
 				overflow: hidden;
 				// cursor: default;
@@ -131,6 +150,12 @@
 						font-weight: 100;
 						text-transform: uppercase;
 						font-size: 14px;
+						@media screen and (max-width: $breakpoint-tablet) {
+							font-size: 10px;
+						}
+						@media screen and (max-width: $breakpoint-mobile) {
+							text-transform: none;
+						}
 					}
 
 					&0 {
@@ -165,6 +190,9 @@
 			@include Category();
 			border: 2px solid $color-gold;
 			box-shadow: 0 0 10px 2px $color-gold;
+			// justify-content: flex-start;
+			// padding-left: 5%;
+			padding-right: 20%;
 
 			.ClickableArea {
 				width: 80%;

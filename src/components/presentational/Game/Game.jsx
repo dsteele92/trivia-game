@@ -234,13 +234,11 @@ export default function Game(props) {
 				))}
 			</section>
 			<section className={Style.Tracker}>
-				<div className={Style.Team}>
-					<div className={Style.GameTracker}></div>
+				<div className={`${Style.Team} ${Style.One}`}>
 					<div className={currentTeam === 2 ? Style.TeamInfoFade : Style.TeamInfo}>
 						<h1 className={currentTeam === 1 ? Style.NameActive : Style.Name}>{props.team1Name}</h1>
 						<div className={Style[`Character${props.character1}`]}></div>
 					</div>
-					<div className={Style.RoundTracker}></div>
 				</div>
 				<div className={Style.Center}>
 					<div className={Style.Round}>
@@ -256,13 +254,11 @@ export default function Game(props) {
 						</p>
 					</div>
 				</div>
-				<div className={Style.Team}>
-					<div className={Style.RoundTracker}></div>
+				<div className={`${Style.Team} ${Style.Two}`}>
 					<div className={currentTeam === 1 ? Style.TeamInfoFade : Style.TeamInfo}>
 						<h1 className={currentTeam === 2 ? Style.NameActive : Style.Name}>{props.team2Name}</h1>
 						<div className={Style[`Character${props.character2}`]}></div>
 					</div>
-					<div className={Style.GameTracker}></div>
 				</div>
 			</section>
 			<main className={Style.Play}>
@@ -275,10 +271,20 @@ export default function Game(props) {
 									className={roundScores.length > index ? Style.RoundComplete : Style.Round}>
 									{roundScores.length > index && (
 										<div className={Style.Score}>
-											<div className={Style[`TeamLeft${props.character1}`]}>
+											<div
+												className={
+													roundScores[index][0] > roundScores[index][1]
+														? Style[`TeamLeft${props.character1}`]
+														: Style.TeamLeft
+												}>
 												<h4>{roundScores[index][0]}</h4>
 											</div>
-											<div className={Style[`TeamRight${props.character2}`]}>
+											<div
+												className={
+													roundScores[index][0] < roundScores[index][1]
+														? Style[`TeamRight${props.character2}`]
+														: Style.TeamRight
+												}>
 												<h4>{roundScores[index][1]}</h4>
 											</div>
 										</div>
@@ -316,7 +322,7 @@ export default function Game(props) {
 								<button onClick={nextRound}>{`Begin Round ${currentRound + 2}`}</button>
 							) : (
 								<div className={Style.EndGame}>
-									<h1>{team1Total > team2Total ? props.team1Name : props.team2Name} Wins</h1>
+									<h1>{team1Total > team2Total ? props.team1Name : props.team2Name} Wins!</h1>
 									<button onClick={props.playAgain}>Play Again</button>
 								</div>
 							)}
