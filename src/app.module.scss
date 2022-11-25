@@ -28,7 +28,7 @@
 		max-height: 1080px;
 		border-radius: 20px;
 
-		@media screen and (max-width: $breakpoint-tablet) {
+		@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 			height: 100%;
 			width: 100%;
 			border-radius: 0px;
@@ -58,7 +58,7 @@
 
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			@media screen and (max-width: $breakpoint-mobile) {
+			@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
 				grid-template-columns: 1fr;
 				grid-template-rows: repeat(4, 1fr);
 			}
@@ -75,7 +75,7 @@
 				text-transform: uppercase;
 				font-weight: 300;
 
-				@media screen and (max-width: $breakpoint-tablet) {
+				@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 					font-size: 16px;
 				}
 
@@ -98,7 +98,7 @@
 				background-position: bottom;
 				transition: 1.5s all cubic-bezier(0.445, 0.05, 0.55, 0.95);
 
-				@media screen and (max-width: $breakpoint-tablet) {
+				@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 					height: 40px;
 					width: 75px;
 				}
@@ -107,10 +107,10 @@
 					@extend .AppaFly;
 					left: 7%;
 					bottom: 0;
-					@media screen and (max-width: $breakpoint-tablet) {
+					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 						bottom: 10%;
 					}
-					@media screen and (max-width: $breakpoint-mobile) {
+					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
 						top: 3%;
 						left: 15%;
 					}
@@ -122,11 +122,11 @@
 					@extend .AppaFly;
 					left: 33%;
 					bottom: 55%;
-					@media screen and (max-width: $breakpoint-tablet) {
+					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 						left: 30%;
 						bottom: 65%;
 					}
-					@media screen and (max-width: $breakpoint-mobile) {
+					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
 						top: 22%;
 						left: 15%;
 					}
@@ -138,11 +138,11 @@
 					@extend .AppaFly;
 					left: 57%;
 					bottom: 0;
-					@media screen and (max-width: $breakpoint-tablet) {
+					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 						left: 55%;
 						bottom: 10%;
 					}
-					@media screen and (max-width: $breakpoint-mobile) {
+					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
 						top: 47%;
 						left: 15%;
 					}
@@ -154,11 +154,11 @@
 					@extend .AppaFly;
 					left: 82%;
 					bottom: 55%;
-					@media screen and (max-width: $breakpoint-tablet) {
+					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 						left: 80%;
 						bottom: 65%;
 					}
-					@media screen and (max-width: $breakpoint-mobile) {
+					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
 						top: 70%;
 						left: 15%;
 					}
@@ -191,7 +191,7 @@
 				align-items: flex-start;
 				background-color: rgb(248, 254, 255);
 
-				@media screen and (max-width: $breakpoint-tablet) {
+				@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 					width: 95%;
 				}
 			}
@@ -215,7 +215,7 @@
 					}
 					input {
 						width: 250px;
-						@media screen and (max-width: $breakpoint-tablet) {
+						@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 							width: 200px;
 						}
 						height: 50px;
@@ -289,7 +289,7 @@
 				@include SetUp();
 				height: 90%;
 				width: 100%;
-				@media screen and (max-width: $breakpoint-tablet) {
+				@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 					width: 100%;
 				}
 				top: 5%;
@@ -310,7 +310,7 @@
 				@include SetUp();
 				height: 90%;
 				width: 100%;
-				@media screen and (max-width: $breakpoint-tablet) {
+				@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 					width: 100%;
 				}
 				top: 5%;
