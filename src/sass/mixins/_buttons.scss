@@ -13,21 +13,31 @@
 }
 
 @mixin instructions {
+	z-index: 10;
 	position: absolute;
-	right: 3%;
-	bottom: 3%;
-	height: 35px;
-	width: 35px;
-	border: 1px solid $color-blue;
-	box-shadow: 0 0 5px rgba(128, 128, 128, 0.488);
-	border-radius: 50%;
-	@include flex-center;
-	font-family: 'Aboreto';
-	font-size: 25px;
-	cursor: pointer;
-	@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+	right: 2%;
+	bottom: 5%;
+	height: 40px;
+	width: 40px;
+	font-size: 24px;
+	@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 		height: 30px;
 		width: 30px;
+		font-size: 20px;
+	}
+
+	border: 1px solid $color-blue;
+	box-shadow: 0 0 10px rgba(128, 128, 128, 0.488);
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.501);
+	@include flex-center;
+	font-family: 'Aboreto';
+	cursor: pointer;
+	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.075);
+
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.769);
+		text-shadow: 0 0 0.5px black;
 	}
 }
 
@@ -40,7 +50,7 @@
 		width: 70px;
 		font-size: 14px;
 	}
-	@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+	@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 		height: 30px;
 		width: 60px;
 		font-size: 12px;
@@ -77,7 +87,7 @@
 		width: 160px;
 		font-size: 14px;
 	}
-	@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+	@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 		height: 30px;
 		width: 140px;
 		font-size: 12px;

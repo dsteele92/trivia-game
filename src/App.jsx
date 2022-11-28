@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import Style from './app.module.scss';
 import { generateUrls } from './utilities';
-import { NextButton, BackButton, CharacterSelect, CategorySelect, StartGame, Game } from 'components';
+import { NextButton, BackButton, CharacterSelect, CategorySelect, StartGame, Game, Instructions } from 'components';
 
 function App() {
 	const [page, setPage] = useState(0);
@@ -45,6 +45,7 @@ function App() {
 	const [questions, setQuestions] = useState([]);
 	const [notes, setNotes] = useState({});
 	const [loading, setLoading] = useState(false);
+	const [showInstructions, setShowInstructions] = useState(false);
 
 	const categoriesList = [
 		'General Knowledge',
@@ -83,7 +84,7 @@ function App() {
 		}
 
 		if (page === 1) {
-			if (character1 !== 0 && character2 !== 0) {
+			if (character1 !== 0 && character2 !== 0 && character1 !== character2) {
 				setNextActive(true);
 			} else {
 				setNextActive(false);
@@ -245,7 +246,7 @@ function App() {
 
 		try {
 			let apiCall = await Promise.all(generateUrls(categoryIds, token).map(axios.get));
-			console.log(apiCall);
+			// console.log(apiCall);
 
 			if (apiCall[0].data.response_code === 3) {
 				// Code 3: Token Not Found Session Token does not exist.
@@ -309,7 +310,7 @@ function App() {
 					}
 				}
 			}
-			console.log(questions);
+			// console.log(questions);
 			setQuestions(questions);
 		} catch (e) {
 			console.log(e);
@@ -323,6 +324,7 @@ function App() {
 		<div className={Style.App}>
 			{!playGame ? (
 				<div className={Style.SetUp}>
+					{showInstructions && <Instructions unmount={() => setShowInstructions(false)} />}
 					<section className={Style.ToDo}>
 						<div className={page === 0 ? Style.ToDoItemCurrent : Style.ToDoItemComplete}>Team Names</div>
 						<div
@@ -339,6 +341,9 @@ function App() {
 						</div>
 						<div className={page === 3 ? Style.ToDoItemCurrent : Style.ToDoItem}>Start Game</div>
 						<div className={Style[`AppaFly${page}`]}></div>
+						<div className={Style.Instructions} onClick={() => setShowInstructions(true)}>
+							?
+						</div>
 					</section>
 					<main className={Style.Settings}>
 						<div className={page === 0 ? Style.Name1 : Style.Name1Below}>
@@ -435,6 +440,7 @@ function App() {
 					categoriesList={categoriesList}
 					categoryIds={categoryIds}
 					playAgain={playAgain}
+					notes={notes}
 				/>
 			)}
 		</div>

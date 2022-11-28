@@ -31,7 +31,6 @@ export default function StartGame(props) {
 					</div>
 				))}
 			</section>
-			<div className={Style.Instructions}>?</div>
 		</div>
 	);
 }

@@ -58,7 +58,7 @@
 
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+			@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 				grid-template-columns: 1fr;
 				grid-template-rows: repeat(4, 1fr);
 			}
@@ -110,7 +110,7 @@
 					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 						bottom: 10%;
 					}
-					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+					@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 						top: 3%;
 						left: 15%;
 					}
@@ -126,7 +126,7 @@
 						left: 30%;
 						bottom: 65%;
 					}
-					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+					@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 						top: 22%;
 						left: 15%;
 					}
@@ -142,7 +142,7 @@
 						left: 55%;
 						bottom: 10%;
 					}
-					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+					@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 						top: 47%;
 						left: 15%;
 					}
@@ -158,7 +158,7 @@
 						left: 80%;
 						bottom: 65%;
 					}
-					@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+					@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 						top: 70%;
 						left: 15%;
 					}
@@ -166,6 +166,9 @@
 						left: 8%;
 					}
 				}
+			}
+			.Instructions {
+				@include instructions;
 			}
 		}
 		.Settings {
@@ -199,6 +202,8 @@
 				@include SetUp();
 				padding: 5% 8%;
 
+				// background: linear-gradient(to bottom right, $color-gold, white);
+
 				.InputDiv {
 					position: absolute;
 					top: 50%;
@@ -214,15 +219,16 @@
 						font-size: 16px;
 					}
 					input {
-						width: 250px;
+						width: 300px;
+						height: 70px;
 						@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 							width: 200px;
+							height: 50px;
 						}
-						height: 50px;
 						text-align: center;
-						border: none;
-						border-radius: 20px;
-						background-color: rgba($color: $color-teal, $alpha: 0.5);
+						border: 1px solid black;
+						border-radius: 5px;
+						background: linear-gradient(to bottom right, rgba($color: $color-teal, $alpha: 0.5), white);
 						padding: 10px 20px;
 						font-size: 25px;
 						font-weight: 100;

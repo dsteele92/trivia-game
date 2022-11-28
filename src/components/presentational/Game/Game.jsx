@@ -2,6 +2,7 @@ import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import Style from './game.module.scss';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { Instructions } from 'components';
 
 export default function Game(props) {
 	const [team1Score, setTeam1Score] = useState(0);
@@ -18,6 +19,8 @@ export default function Game(props) {
 	const [currentRoundResults, setCurrentRoundResults] = useState([0, 0, 0, 0, 0, 0, 0]);
 	const [roundEnd, setRoundEnd] = useState(true);
 	const [nextActive, setNextActive] = useState(false);
+	const [showInstructions, setShowInstructions] = useState(false);
+	const [showNotes, setShowNotes] = useState([false, false, false, false, false, false, false]);
 
 	useEffect(() => {
 		const answers = [...props.questions[currentRound][currentQuestion].incorrect_answers];
@@ -25,7 +28,7 @@ export default function Game(props) {
 		const index = Math.floor(Math.random() * 4);
 
 		answers.splice(index, 0, correctAnswer);
-		console.log(answers);
+		// console.log(answers);
 		setCurrentAnswers(answers);
 		setAnswerIndex(index);
 	}, [props.questions, currentQuestion, currentRound]);
@@ -108,7 +111,7 @@ export default function Game(props) {
 				roundScore.push(team2Score);
 				const update = [...roundScores, roundScore];
 				setRoundScores(update);
-				console.log(update);
+				// console.log(update);
 			}
 		}
 	};
@@ -210,6 +213,7 @@ export default function Game(props) {
 		'&reg;': '®',
 		'&#167;': '§',
 		'&#182;': '¶',
+		'&deg;': '°',
 	};
 
 	const replace = (str) => {
@@ -218,6 +222,7 @@ export default function Game(props) {
 
 	return (
 		<div className={Style.Game}>
+			{showInstructions && <Instructions unmount={() => setShowInstructions(false)} />}
 			<section className={Style.Points}>
 				{currentRoundResults.map((result, index) => (
 					<div
@@ -247,7 +252,7 @@ export default function Game(props) {
 							{props.categoriesList[Object.keys(props.categoryIds)[currentRound]]}
 						</h4>
 					</div>
-					<div className={Style.Score}>
+					<div className={Style.Score} onClick={() => console.log(props.notes)}>
 						<p>
 							<span className={team1Score >= 4 ? Style.Win : ''}>{team1Score}</span>-
 							<span className={team2Score >= 4 ? Style.Win : ''}>{team2Score}</span>
@@ -265,51 +270,123 @@ export default function Game(props) {
 				{roundEnd ? (
 					<div className={Style.Display}>
 						<div className={Style.Transition}>
-							{Object.entries(props.categoryIds).map((entry, index) => (
-								<div
-									key={index}
-									className={roundScores.length > index ? Style.RoundComplete : Style.Round}>
-									{roundScores.length > index && (
-										<div className={Style.Score}>
-											<div
-												className={
-													roundScores[index][0] > roundScores[index][1]
-														? Style[`TeamLeft${props.character1}`]
-														: Style.TeamLeft
-												}>
-												<h4>{roundScores[index][0]}</h4>
-											</div>
-											<div
-												className={
-													roundScores[index][0] < roundScores[index][1]
-														? Style[`TeamRight${props.character2}`]
-														: Style.TeamRight
-												}>
-												<h4>{roundScores[index][1]}</h4>
-											</div>
-										</div>
-									)}
+							<div className={Style.Header}>
+								{currentRound + 1 < props.rounds ? (
+									<h2>Best of {props.rounds}</h2>
+								) : (
+									<h2 className={Style.Winner}>
+										{team1Total > team2Total ? props.team1Name : props.team2Name} Wins!
+									</h2>
+								)}
+								<h1>
+									<span className={`${Style[`Name${props.character1}`]} ${Style.Left}`}>
+										{props.team1Name}
+									</span>
+									<div className={Style.TotalScore}>
+										{team1Total}-{team2Total}
+									</div>
+									<span className={`${Style[`Name${props.character2}`]} ${Style.Right}`}>
+										{props.team2Name}
+									</span>
+								</h1>
+							</div>
+							<div className={Style.Rounds}>
+								{Object.entries(props.categoryIds).map((entry, index) => (
 									<div
-										className={
-											roundScores.length <= index
-												? Style.Info
-												: roundScores[index][0] > roundScores[index][1]
-												? Style[`Info${props.character1}`]
-												: Style[`Info${props.character2}`]
-										}>
-										<div className={Style.Number}>
-											<h4>Round</h4>
-											<div>{index + 1}</div>
-										</div>
-										<div className={Style.Category}>
-											<p>{props.categoriesList[entry[0]]}</p>
-										</div>
-										<div className={Style.Difficulty}>
-											<h4>{entry[1]}</h4>
+										key={index}
+										className={roundScores.length > index ? Style.RoundComplete : Style.Round}>
+										{roundScores.length > index && (
+											<div className={Style.Score}>
+												<div
+													className={
+														roundScores[index][0] > roundScores[index][1]
+															? Style[`TeamLeft${props.character1}`]
+															: Style.TeamLeft
+													}>
+													<h4>{roundScores[index][0]}</h4>
+												</div>
+												<div
+													className={
+														roundScores[index][0] < roundScores[index][1]
+															? Style[`TeamRight${props.character2}`]
+															: Style.TeamRight
+													}>
+													<h4>{roundScores[index][1]}</h4>
+												</div>
+											</div>
+										)}
+										<div
+											className={
+												roundScores.length <= index
+													? Style.Info
+													: roundScores[index][0] > roundScores[index][1]
+													? Style[`Info${props.character1}`]
+													: Style[`Info${props.character2}`]
+											}>
+											<div className={Style.Number}>
+												<h4>Round</h4>
+												<div>{index + 1}</div>
+											</div>
+											<div className={Style.Category}>
+												<p>{props.categoriesList[entry[0]]}</p>
+											</div>
+											<div className={Style.Difficulty}>
+												<h4>{entry[1]}</h4>
+											</div>
+											{props.notes[index + 1] && (
+												<div
+													className={Style.Note}
+													onClick={() =>
+														setShowNotes(
+															showNotes.map((note, i) => {
+																if (i === index) {
+																	return true;
+																} else {
+																	return note;
+																}
+															})
+														)
+													}>
+													!
+												</div>
+											)}
+											{props.notes[index + 1] && (
+												<div className={showNotes[index] ? Style.ShowNote : Style.ShowNoteHide}>
+													{props.notes[index + 1] === 1 ? (
+														<p>
+															There are not enough questions remaining for this
+															difficulty.
+															<br />
+															Questions will be of any difficulty.
+														</p>
+													) : (
+														<p>
+															There are not enough questions remaining for this category.
+															<br />
+															Questions will be from random categories.
+														</p>
+													)}
+													<div
+														className={Style.Close}
+														onClick={() =>
+															setShowNotes(
+																showNotes.map((note, i) => {
+																	if (i === index) {
+																		return false;
+																	} else {
+																		return note;
+																	}
+																})
+															)
+														}>
+														X
+													</div>
+												</div>
+											)}
 										</div>
 									</div>
-								</div>
-							))}
+								))}
+							</div>
 							{currentRound === 0 && currentQuestion === 0 ? (
 								<button
 									onClick={() => {
@@ -321,12 +398,11 @@ export default function Game(props) {
 							) : currentRound + 1 < props.rounds ? (
 								<button onClick={nextRound}>{`Begin Round ${currentRound + 2}`}</button>
 							) : (
-								<div className={Style.EndGame}>
-									<h1>{team1Total > team2Total ? props.team1Name : props.team2Name} Wins!</h1>
-									<button onClick={props.playAgain}>Play Again</button>
-								</div>
+								<button onClick={props.playAgain}>Play Again</button>
 							)}
-							<div className={Style.Instructions}>?</div>
+							<div className={Style.Instructions} onClick={() => setShowInstructions(true)}>
+								?
+							</div>
 						</div>
 					</div>
 				) : (
@@ -366,14 +442,24 @@ export default function Game(props) {
 									<div className={Style.Front}>
 										{answer.replace(/&#?\w+;/g, (str) => replace(str))}
 									</div>
-									<div className={Style.Back}>
+									<div className={answerIndex === index ? Style.BackCorrect : Style.BackIncorrect}>
 										{answerIndex === index ? (
-											<div className={Style.Correct}>
-												<FaCheck />
+											<div>
+												<div className={Style.Text}>
+													{answer.replace(/&#?\w+;/g, (str) => replace(str))}
+												</div>
+												<div className={Style.Background}>
+													<FaCheck />
+												</div>
 											</div>
 										) : (
-											<div className={Style.Incorrect}>
-												<FaTimes />
+											<div>
+												<div className={Style.Text}>
+													{answer.replace(/&#?\w+;/g, (str) => replace(str))}
+												</div>
+												<div className={Style.Background}>
+													<FaTimes />
+												</div>
 											</div>
 										)}
 									</div>

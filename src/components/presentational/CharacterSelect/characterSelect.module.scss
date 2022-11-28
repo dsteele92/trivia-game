@@ -49,7 +49,7 @@
 				height: 70px;
 				margin: 10px 10px;
 			}
-			@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-mobile) {
+			@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
 				width: 55px;
 				height: 55px;
 				margin: 5px 5px;
