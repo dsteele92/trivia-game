@@ -24,19 +24,26 @@
 			justify-content: center;
 
 			h1 {
-				font-size: 35px;
+				font-size: 32px;
 				margin-bottom: 10px;
 				font-family: 'Aboreto';
-				@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
+				@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 					font-size: 28px;
+				}
+				@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
+					font-size: 22px;
 				}
 			}
 			.Character {
-				width: 150px;
-				height: 150px;
-				@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
+				width: 135px;
+				height: 135px;
+				@media screen and (max-width: $breakpoint-tablet), (max-height: $breakpoint-tablet) {
 					width: 120px;
 					height: 120px;
+				}
+				@media screen and (max-width: $breakpoint-mobile), (max-height: $breakpoint-mobile) {
+					width: 100px;
+					height: 100px;
 				}
 				border-radius: 50%;
 				overflow: hidden;
