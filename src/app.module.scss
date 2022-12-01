@@ -6,7 +6,7 @@
 	background-color: $color-background;
 	@include flex-center;
 
-	@media screen and (orientation: landscape) and (max-height: $breakpoint-tablet) {
+	@media screen and (orientation: landscape) and (max-height: 500px) {
 		/* Rotate the content container */
 		transform: rotate(-90deg);
 		transform-origin: left top;
