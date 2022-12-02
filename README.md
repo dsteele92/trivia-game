@@ -12,6 +12,6 @@
 -   EACH ROUND WILL BE AWARDED A WINNER
 -   THE PLAYER WHO WINS THE MOST ROUNDS WINS THE GAME
 
-## https://trivia-game-ffc01.web.app/
+### https://trivia-game-ffc01.web.app/
 
 ![](https://github.com/dsteele92/trivia-game/blob/master/triviaGIF.gif)
