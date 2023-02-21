@@ -28,13 +28,15 @@ export default function Game(props) {
 		const index = Math.floor(Math.random() * 4);
 
 		answers.splice(index, 0, correctAnswer);
-		// console.log(answers);
 		setCurrentAnswers(answers);
 		setAnswerIndex(index);
 	}, [props.questions, currentQuestion, currentRound]);
 
 	const flip = (chosen) => {
 		if (nextActive) {
+			return;
+		}
+		if (flipped[chosen]) {
 			return;
 		}
 		const update = flipped.map((bool, index) => (index === chosen ? true : bool));
