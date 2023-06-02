@@ -1,8 +1,25 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import Style from './nextButton.module.scss';
 import { GiSlicingArrow } from 'react-icons/gi';
 
 export default function NextButton(props) {
+	useEffect(() => {
+		const handleKeyPress = (event) => {
+			if (event.key === 'Enter') {
+				if (props.active) {
+					props.onClick();
+				}
+			}
+		};
+
+		document.addEventListener('keydown', handleKeyPress);
+
+		// Clean up the event listener
+		return () => {
+			document.removeEventListener('keydown', handleKeyPress);
+		};
+	}, [props]);
+
 	return (
 		<button className={props.active ? Style.ButtonActive : Style.Button} onClick={props.onClick}>
 			<div className={Style.Border}></div>
